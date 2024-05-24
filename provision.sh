@@ -79,6 +79,9 @@ sudo apt install -y python3-colcon-common-extensions python3-rosdep
 sudo rosdep init && rosdep update
 rosdep install --from-paths src -y --ignore-src
 
+# Install additional ROS2 packages
+sudo apt install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-teleop-twist-joy ros-jazzy-foxglove-bridge
+
 # Build ROS2 workspace
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 echo 'source ~/ros2_ws/install/setup.bash' >> ~/.bashrc
