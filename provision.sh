@@ -7,7 +7,7 @@ echo 'nameserver 8.8.8.8' > /etc/resolv.conf
 # Setup for Raspberry Pi 5
 echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
-echo 'video=HDMI-A-1:720x720M@60D,rotate=270' >> /boot/firmware/cmdline.txt
+sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
 # Setup realtime permissions
 sudo addgroup realtime
