@@ -1,0 +1,25 @@
+#cloud-config
+
+hostname: pupper
+
+ssh_pwauth: true
+
+groups:
+- realtime
+
+users:
+  - name: pi
+    plain_text_passwd: 'rhea123'
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: [tty, realtime, adm, cdrom, sudo, dip, plugdev, lxd]
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: true
+      optional: true
+
+runcmd:
+  - echo -e '@realtime soft rtprio 99\n@realtime soft priority 99\n@realtime soft memlock 102400\n@realtime hard rtprio 99\n@realtime hard priority 99\n@realtime hard memlock 102400' | sudo tee -a /etc/security/limits.conf

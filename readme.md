@@ -15,3 +15,10 @@ docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-b
 This takes about 10 minutes on an M1 MacBook Pro.
 
 The output is written to `pupOS.img`.
+
+### Default credentials
+Hostname: `pupper`
+
+User: `pi`
+
+Password: `rhea123`

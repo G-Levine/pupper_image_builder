@@ -1,31 +1,12 @@
 #!/bin/bash -e
 
-# Packer errors without this
-rm /etc/resolv.conf
-echo 'nameserver 8.8.8.8' > /etc/resolv.conf
-
 # Setup for Raspberry Pi 5
 echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
 sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
-# Setup realtime permissions
-sudo addgroup realtime
-sudo usermod -a -G realtime $(whoami)
-echo -e '@realtime soft rtprio 99\n@realtime soft priority 99\n@realtime soft memlock 102400\n@realtime hard rtprio 99\n@realtime hard priority 99\n@realtime hard memlock 102400' | sudo tee -a /etc/security/limits.conf
-
-# Set up networking and hostname
-echo 'pupper' > /etc/hostname
+# Set up avahi-daemon
 sudo apt install -y avahi-daemon
-echo 'network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    eth0:
-      dhcp4: true
-      optional: true' > /etc/netplan/01-netcfg.yaml
-sudo netplan generate
-sudo netplan apply
 
 # Install low-latency kernel
 sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/
@@ -47,12 +28,6 @@ pip install --upgrade pyaudio deepgram-sdk
 sudo wget -qO- https://docs.luxonis.com/install_dependencies.sh | bash
 echo 'export OPENBLAS_CORETYPE=ARMV8' >> ~/.bashrc && source ~/.bashrc
 pip install blobconverter
-
-# Install utils
-cd ~
-git clone https://github.com/Nate711/utils.git
-# bash ~/utils/install_battery_monitor.sh
-# bash ~/utils/install_robot_auto_start_service.sh
 
 # Install ROS2
 sudo apt install software-properties-common
@@ -86,3 +61,9 @@ sudo apt install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 echo 'source ~/ros2_ws/install/setup.bash' >> ~/.bashrc
 source ~/ros2_ws/install/setup.bash
+
+# Install utils
+cd ~
+git clone https://github.com/Nate711/utils.git -b launch_neural_controller
+bash ~/utils/install_battery_monitor.sh
+bash ~/utils/install_robot_auto_start_service.sh

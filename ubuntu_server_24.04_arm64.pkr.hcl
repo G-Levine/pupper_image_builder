@@ -47,7 +47,25 @@ source "arm" "ubuntu" {
 build {
   sources = ["source.arm.ubuntu"]
 
+  provisioner "file" {
+    source      = "user-data"
+    destination = "/boot/firmware/user-data"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
+      "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
+    ]
+  }
+
   provisioner "shell" {
     script = "provision.sh"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /etc/resolv.conf.bk /etc/resolv.conf",
+    ]
   }
 }
