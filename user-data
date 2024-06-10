@@ -24,3 +24,4 @@ network:
 
 runcmd:
   - echo -e '@realtime soft rtprio 99\n@realtime soft priority 99\n@realtime soft memlock 102400\n@realtime hard rtprio 99\n@realtime hard priority 99\n@realtime hard memlock 102400' | sudo tee -a /etc/security/limits.conf
+  - chown -R pi /home/pi

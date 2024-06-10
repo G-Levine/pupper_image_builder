@@ -74,11 +74,11 @@ sudo rosdep init && rosdep update
 rosdep install --from-paths src -y --ignore-src
 
 # Install additional ROS2 packages
-sudo apt install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-teleop-twist-joy ros-jazzy-foxglove-bridge
+sudo apt install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-teleop-twist-joy ros-jazzy-foxglove-bridge ros-jazzy-xacro
 
 # Build ROS2 workspace
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
-echo 'source /home/$DEFAULT_USER/ros2_ws/install/setup.bash' >> /home/$DEFAULT_USER/.bashrc
+echo 'source ~/ros2_ws/install/setup.bash' >> /home/$DEFAULT_USER/.bashrc
 source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 
 # Install utils
