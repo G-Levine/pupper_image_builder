@@ -19,6 +19,7 @@ sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.tx
 
 # Download and extract the display overlays
 curl 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -o 4HDMIB_DTBO.zip
+sudo apt install -y unzip
 unzip 4HDMIB_DTBO.zip
 sudo cp 4HDMIB_DTBO/*.dtbo /boot/firmware/overlays/
 rm -r 4HDMIB_DTBO 4HDMIB_DTBO.zip
