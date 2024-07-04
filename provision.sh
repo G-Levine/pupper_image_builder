@@ -15,6 +15,7 @@ echo 'hdmi_mode=87' >> /boot/firmware/config.txt
 echo 'hdmi_timings=720 0 100 20 100 720 0 20 8 20 0 0 0 60 0 48000000 6' >> /boot/firmware/config.txt
 echo 'start_x=0' >> /boot/firmware/config.txt
 echo 'gpu_mem=128' >> /boot/firmware/config.txt
+echo 'dtoverlay=hifiberry-dac' >> /boot/firmware/config.txt
 sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
 # Download and extract the display overlays
