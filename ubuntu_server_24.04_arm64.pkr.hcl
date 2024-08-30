@@ -14,14 +14,14 @@ locals {
 }
 
 source "arm" "ubuntu" {
-  file_urls             = ["https://cdimage.ubuntu.com/releases/24.04/release/ubuntu-24.04-preinstalled-server-arm64+raspi.img.xz"]
+  file_urls             = ["https://cdimage.ubuntu.com/releases/24.04/release/ubuntu-24.04.1-preinstalled-desktop-arm64+raspi.img.xz"]
   file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04/release/SHA256SUMS"
   file_checksum_type    = "sha256"
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
   image_path            = "pupOS.img"
-  image_size            = "6G"
+  image_size            = "10G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
@@ -47,16 +47,38 @@ source "arm" "ubuntu" {
 build {
   sources = ["source.arm.ubuntu"]
 
-  provisioner "file" {
-    source      = "user-data"
-    destination = "/boot/firmware/user-data"
+  provisioner "shell" {
+    inline = ["sleep 10"]
   }
 
+# For some reason would never complete
+#   provisioner "shell" {
+#     inline = [
+#      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+#     ]
+#   }
+
+  # Required to get internet access
   provisioner "shell" {
     inline = [
       "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
       "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
     ]
+  }
+
+  # Set hostname to 'pupper'
+  provisioner "shell" {
+    script = "set_hostname.sh"
+  }
+
+  # Fix ubuntu sources
+  provisioner "shell" {
+    script = "fix_ubuntu_sources.sh"
+  }
+
+  provisioner "file" {
+    source      = "user-data"
+    destination = "/boot/firmware/user-data"
   }
 
   provisioner "shell" {
