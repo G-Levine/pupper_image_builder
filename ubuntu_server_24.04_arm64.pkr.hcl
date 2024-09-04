@@ -13,9 +13,9 @@ locals {
   # git_sha = data.git-commit.cwd-head.hash
 }
 
-source "arm" "ubuntu" {
-  file_urls             = ["https://cdimage.ubuntu.com/releases/24.04/release/ubuntu-24.04.1-preinstalled-desktop-arm64+raspi.img.xz"]
-  file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04/release/SHA256SUMS"
+source "arm" "raspbian" {
+  file_urls             = ["https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2024-07-04/2024-07-04-raspios-bookworm-arm64.img.xz"]
+  file_checksum_url     = "https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2024-07-04/2024-07-04-raspios-bookworm-arm64.img.xz.sha256"
   file_checksum_type    = "sha256"
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
@@ -45,7 +45,7 @@ source "arm" "ubuntu" {
 }
 
 build {
-  sources = ["source.arm.ubuntu"]
+  sources = ["source.arm.raspbian"]
 
   provisioner "shell" {
     inline = ["sleep 10"]
@@ -71,15 +71,12 @@ build {
     script = "set_hostname.sh"
   }
 
-  # Fix ubuntu sources
-  provisioner "shell" {
-    script = "fix_ubuntu_sources.sh"
-  }
 
-  provisioner "file" {
-    source      = "user-data"
-    destination = "/boot/firmware/user-data"
-  }
+
+#   provisioner "file" {
+#     source      = "user-data"
+#     destination = "/boot/firmware/user-data"
+#   }
 
   provisioner "shell" {
     script = "provision.sh"
