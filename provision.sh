@@ -72,6 +72,7 @@ sudo apt install -y software-properties-common
 mkdir -p /home/$DEFAULT_USER/ros2_ws/src
 cd /home/$DEFAULT_USER/ros2_ws/src
 
+pip install typeguard
 git clone https://github.com/pal-robotics/backward_ros.git --recurse-submodules
 git clone https://github.com/PickNikRobotics/RSL.git --recurse-submodules
 git clone https://github.com/PickNikRobotics/generate_parameter_library.git --recurse-submodules
