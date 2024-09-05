@@ -9,6 +9,10 @@ mkdir -p /home/$DEFAULT_USER
 # Update packages
 sudo apt update
 
+# Install desktop
+# sudo apt install -y xfce4 lightdm
+sudo apt install -y xubuntu-core
+
 # Setup for Raspberry Pi 5
 echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
@@ -26,6 +30,7 @@ echo 'dtoverlay=hifiberry-dac' >> /boot/firmware/config.txt
 sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
 # Download and extract the display overlays
+sleep 1
 wget 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -O 4HDMIB_DTBO.zip
 sudo apt install -y unzip
 unzip 4HDMIB_DTBO.zip
@@ -65,8 +70,10 @@ source /opt/ros/jazzy/setup.bash
 # Create ROS2 workspace
 mkdir -p /home/$DEFAULT_USER/ros2_ws/src
 cd /home/$DEFAULT_USER/ros2_ws/src
+sleep 1
 git clone https://github.com/G-Levine/control_board_hardware_interface.git
 git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules 
+sleep 1
 git clone https://github.com/G-Levine/pupper_v3_description.git
 git clone https://github.com/Nate711/pupper_feelings.git
 
@@ -89,6 +96,7 @@ source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 
 # Install utils
 cd /home/$DEFAULT_USER
+sleep 1
 git clone https://github.com/Nate711/utils.git -b launch_neural_controller
 bash /home/$DEFAULT_USER/utils/install_battery_monitor.sh
 bash /home/$DEFAULT_USER/utils/install_robot_auto_start_service.sh
