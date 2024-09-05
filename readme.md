@@ -25,8 +25,9 @@ Password: `rhea123`
 
 ## Operating systems
 * Ubuntu Server - checkout `master` branch. 
-* Ubuntu Desktop - checkout `server_to_desktop` branch (gui branch uses Desktop image and is super slow)
+* Ubuntu Desktop (recommended) - checkout `server_to_desktop` branch. Desktop installed on top of Server
 * PiOS - checkout `pios` branch. 
+* (gui branch uses Desktop image and is super slow)
 
 ## Known issues
 * With Ubuntu desktop, opening an application (e.g. terminal) takes forever. And need to switch to x11 somehow to work with rviz
