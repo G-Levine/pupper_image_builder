@@ -8,8 +8,8 @@ Requires Docker to be installed and running.
 
 ```
 docker pull mkaczanowski/packer-builder-arm:latest
-docker run --memory 16g --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init .
-docker run --memory 16g --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build .
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init .
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build .
 ```
 
 This takes about 10 minutes on an M1 MacBook Pro.
@@ -27,6 +27,9 @@ Password: `rhea123`
 Checksum error with the ubuntu desktop image
 * Most likely the image was updated but packer has cached the checksum and has not realized it should get the new checksum. 
 * Delete .packer_plugins/github.com/ethanmdavidson/git/packer-plugin-git_v0.6.3_x5.0_linux_arm64_SHA256SUM to make packer download the checksum again.
+
+Out of memory / build taking a long time
+* Increase RAM memory limit in the Docker Desktop application (go to settings->resources)
 
 ## Issues
 * Ubuntu shows you set up wizard on first boot (user-data not applied)
