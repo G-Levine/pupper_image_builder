@@ -47,17 +47,6 @@ source "arm" "ubuntu" {
 build {
   sources = ["source.arm.ubuntu"]
 
-  provisioner "shell" {
-    inline = ["sleep 10"]
-  }
-
-# For some reason would never complete
-#   provisioner "shell" {
-#     inline = [
-#      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
-#     ]
-#   }
-
   # Required to get internet access
   provisioner "shell" {
     inline = [
