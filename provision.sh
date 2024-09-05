@@ -75,17 +75,22 @@ cd /home/$DEFAULT_USER/ros2_ws/src
 pip install typeguard
 git clone https://github.com/pal-robotics/backward_ros.git --recurse-submodules
 git clone https://github.com/PickNikRobotics/RSL.git --recurse-submodules
+sleep 1
 git clone https://github.com/PickNikRobotics/generate_parameter_library.git --recurse-submodules
 git clone https://github.com/ros-controls/realtime_tools.git --recurse-submodules
 git clone https://github.com/ros-controls/control_msgs.git --recurse-submodules
+sleep 1
 git clone https://github.com/ros/diagnostics.git --recurse-submodules
 git clone https://github.com/ros2/teleop_twist_joy.git --recurse-submodules
+sleep 1
 git clone -b ros2 https://github.com/ros-drivers/joystick_drivers.git --recurse-submodules
 git clone -b ros2 https://github.com/ros/xacro.git --recurse-submodules
 git clone https://github.com/G-Levine/control_board_hardware_interface.git --recurse-submodules
+sleep 1
 git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules
 git clone https://github.com/G-Levine/pupper_v3_description.git --recurse-submodules
 git clone https://github.com/Nate711/pupper_feelings.git --recurse-submodules
+sleep 1
 git clone https://github.com/ros-controls/ros2_control.git --recurse-submodules
 git clone https://github.com/PickNikRobotics/cpp_polyfills.git --recurse-submodules
 
