@@ -20,7 +20,7 @@ source "arm" "ubuntu" {
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "pupOS.img"
+  image_path            = "pupOS_ubuntu_desktop.img"
   image_size            = "10G"
   image_type            = "dos"
   image_partitions {
