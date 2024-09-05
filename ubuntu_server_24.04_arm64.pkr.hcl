@@ -20,8 +20,8 @@ source "arm" "ubuntu" {
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "pupOS_ubuntu_server.img"
-  image_size            = "6G"
+  image_path            = "pupOS_ubuntu_server_to_desktop.img"
+  image_size            = "10G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
@@ -53,6 +53,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "set_nameservers.sh"
+  }
+
+  provisioner "shell" {
     inline = [
       "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
       "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
@@ -71,11 +75,5 @@ build {
 
   provisioner "shell" {
     script = "provision.sh"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mv /etc/resolv.conf.bk /etc/resolv.conf",
-    ]
   }
 }
