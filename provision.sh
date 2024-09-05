@@ -9,6 +9,9 @@ mkdir -p /home/$DEFAULT_USER
 # Update packages
 sudo apt update
 
+# Install desktop
+sudo apt install -y ubuntu-desktop
+
 # Setup for Raspberry Pi 5
 echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
