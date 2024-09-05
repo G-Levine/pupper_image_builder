@@ -28,6 +28,9 @@ Checksum error with the ubuntu desktop image
 * Most likely the image was updated but packer has cached the checksum and has not realized it should get the new checksum. 
 * Delete .packer_plugins/github.com/ethanmdavidson/git/packer-plugin-git_v0.6.3_x5.0_linux_arm64_SHA256SUM to make packer download the checksum again.
 
+Out of memory / build taking a long time
+* Increase RAM memory limit in the Docker Desktop application (go to settings->resources)
+
 ## Issues
 * Ubuntu shows you set up wizard on first boot (user-data not applied)
 * user-data is not applied (still need to check if it copied over correctly). You can see in /etc/security/limits.conf that user-data has not been applied

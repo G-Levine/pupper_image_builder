@@ -6,8 +6,8 @@ export DEBIAN_FRONTEND=noninteractive
 DEFAULT_USER=pi
 mkdir -p /home/$DEFAULT_USER
 
+# Update packages
 sudo apt update
-sudo apt upgrade -y
 
 # Setup for Raspberry Pi 5
 echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
@@ -40,10 +40,7 @@ sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-
 sudo apt install -y linux-lowlatency
 
 # # Adafruit GPIO setup
-sudo apt install -y python-is-python3 python3-pip i2c-tools libgpiod-dev python3-libgpiod
-
-# IRL pi said already newest
-# sudo apt-get install -y gcc-aarch64-linux-gnu build-essential
+sudo apt install -y python-is-python3 python3-pip i2c-tools libgpiod-dev python3-libgpiod build-essential
 
 sudo rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 pip install Adafruit-Blinka RPi.GPIO
@@ -54,11 +51,6 @@ sudo apt install -y bluez
 # Audio
 sudo apt install -y portaudio19-dev python3-pyaudio alsa-utils
 pip install --upgrade pyaudio deepgram-sdk
-
-# DepthAI
-sudo wget -qO- https://docs.luxonis.com/install_dependencies.sh | bash
-echo 'export OPENBLAS_CORETYPE=ARMV8' >> /home/$DEFAULT_USER/.bashrc && source /home/$DEFAULT_USER/.bashrc
-pip install blobconverter
 
 # Install ROS2
 sudo apt install software-properties-common
@@ -89,6 +81,9 @@ rosdep install --from-paths src -y --ignore-src
 
 # Install additional ROS2 packages
 sudo apt install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-teleop-twist-joy ros-jazzy-foxglove-bridge ros-jazzy-xacro
+
+# Upgrade packages near the end since it takes a long time
+sudo apt upgrade -y
 
 # Build ROS2 workspace
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
