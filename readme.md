@@ -8,8 +8,8 @@ Requires Docker to be installed and running.
 
 ```
 docker pull mkaczanowski/packer-builder-arm:latest
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init .
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build .
+docker run --memory 16g --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init .
+docker run --memory 16g --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build .
 ```
 
 This takes about 10 minutes on an M1 MacBook Pro.
