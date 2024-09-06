@@ -61,12 +61,22 @@ build {
 
   # Set hostname to 'pupper'
   provisioner "shell" {
-    script = "set_hostname.sh"
+    script = "setup_scripts/set_hostname.sh"
   }
 
   # Fix ubuntu sources
   provisioner "shell" {
-    script = "fix_ubuntu_sources.sh"
+    script = "setup_scripts/fix_ubuntu_sources.sh"
+  }
+
+  # Set robot to log in automatically to pi
+  provisioner "shell" {
+    script = "setup_scripts/set_autologin.sh"
+  }
+
+  # Set robot to log in automatically to pi
+  provisioner "shell" {
+    script = "setup_scripts/disable_networkmanager.sh"
   }
 
   provisioner "shell" {
