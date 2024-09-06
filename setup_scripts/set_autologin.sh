@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Define the username for autologin
 USERNAME="pi"

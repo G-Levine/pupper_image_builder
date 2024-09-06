@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Define the path to the sources file
 SOURCE_FILE="/etc/apt/sources.list.d/ubuntu.sources"

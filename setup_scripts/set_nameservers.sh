@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Backup the original resolved.conf file
 sudo cp /etc/systemd/resolved.conf /etc/systemd/resolved.conf.backup
