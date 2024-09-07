@@ -53,17 +53,15 @@ build {
   }
 
   provisioner "shell" {
-    script = "set_nameservers.sh"
-  }
-
-  provisioner "shell" {
     inline = [
       "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
       "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
+      "sudo echo 'nameserver 1.1.1.1' > /etc/resolv.conf",
     ]
   }
 
   # Set hostname to 'pupper'
+  # Does not fix sudo: unable to resolve host 02eafc09d153: Name or service not known
   provisioner "shell" {
     script = "setup_scripts/set_hostname.sh"
   }
@@ -73,17 +71,24 @@ build {
     script = "setup_scripts/fix_ubuntu_sources.sh"
   }
 
-  # Set robot to log in automatically to pi
-  provisioner "shell" {
-    script = "setup_scripts/set_autologin.sh"
-  }
-
-  # Set robot to log in automatically to pi
-  provisioner "shell" {
-    script = "setup_scripts/disable_networkmanager.sh"
-  }
-
   provisioner "shell" {
     script = "provision.sh"
   }
+
+  provisioner "shell" {
+    script = "setup_scripts/set_nameservers.sh"
+  }
+
+  # Set robot to log in automatically to pi
+  # Error: Failed to disable unit, unit NetworkManager-wait-online.service does not exist.
+#   provisioner "shell" {
+#     script = "setup_scripts/disable_networkmanager.sh"
+#   }
+
+  # Set robot to log in automatically to pi
+  # Error: /etc/gdm3/custom.conf: No such file or directory
+#   provisioner "shell" {
+#     script = "setup_scripts/set_autologin.sh"
+#   }
+
 }

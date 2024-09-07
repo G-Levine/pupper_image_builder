@@ -100,7 +100,8 @@ retry_command "git clone https://github.com/G-Levine/control_board_hardware_inte
 # Install dependencies
 cd /home/$DEFAULT_USER/ros2_ws
 sudo apt install -y python3-colcon-common-extensions python3-rosdep
-retry_command "sudo rosdep init && rosdep update" 10
+retry_command "sudo rosdep init" 10
+retry_command "rosdep update" 10
 rosdep install --from-paths src -y --ignore-src
 
 # Install additional ROS2 packages
