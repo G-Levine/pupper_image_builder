@@ -12,7 +12,7 @@ docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-b
 docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build .
 ```
 
-This takes about 10 minutes on an M1 MacBook Pro.
+This takes about 30 minutes on an M1 MacBook Pro.
 
 The output is written to `pupOS.img`.
 
@@ -42,6 +42,12 @@ Out of memory / build taking a long time
 
 ## Issues
 * Ubuntu shows you set up wizard on first boot (user-data not applied)
-* user-data is not applied (still need to check if it copied over correctly). You can see in /etc/security/limits.conf that user-data has not been applied
+    * Fixed on `server_to_desktop` branch
+* user-data is not applied (still need to check if it copied over correctly). You can see in `/etc/security/limits.conf` that user-data has not been applied
+    * Fixed on `server_to_desktop` branch
 * Takes forever to open any application (Terminal, Files, etc)
+    * Fixed on `server_to_desktop`
 * Display orientation is wrong
+* `NetworkManager-wait-online.service` adds 1 min to startup time
+    * Have to run `sudo systemctl disable NetworkManager-wait-online.service` after booting actual RPi
+* Sometimes get errors like `arm.ubuntu:         <urlopen error <urlopen error [Errno -3] Temporary failure in name resolution> (https://raw.githubusercontent.com/ros/rosdistro/master/humble/distribution.yaml)>` during image build where the container can't properly get web resources. 
