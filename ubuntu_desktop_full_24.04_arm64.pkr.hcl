@@ -14,13 +14,13 @@ locals {
 }
 
 source "arm" "ubuntu" {
-  file_urls             = ["https://cdimage.ubuntu.com/releases/24.04.1/release/ubuntu-24.04.1-preinstalled-server-arm64+raspi.img.xz"]
-  file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04.1/release/SHA256SUMS"
-  file_checksum_type    = "sha256"
-  file_target_extension = "xz"
-  file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
+  file_urls             = ["./pupOS_ubuntu_desktop_ros_base.img"]
+#   file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04.1/release/SHA256SUMS"
+  file_checksum_type    = "none"
+  file_target_extension = "img"
+#   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "pupOS_ubuntu_server.img"
+  image_path            = "pupOS_ubuntu_desktop_full.img"
   image_size            = "10G"
   image_type            = "dos"
   image_partitions {
@@ -51,7 +51,8 @@ build {
     source      = "user-data"
     destination = "/boot/firmware/user-data"
   }
-
+  
+  # Add temporary DNS for internet
   provisioner "shell" {
     inline = [
       "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
@@ -72,7 +73,7 @@ build {
   }
 
   provisioner "shell" {
-    script = "provision_server.sh"
+    script = "provision_desktop.sh"
   }
 
   provisioner "shell" {

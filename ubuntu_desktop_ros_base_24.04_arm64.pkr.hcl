@@ -20,7 +20,7 @@ source "arm" "ubuntu" {
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "pupOS_ubuntu_server_to_desktop_ros_base.img"
+  image_path            = "pupOS_ubuntu_desktop_ros_base.img"
   image_size            = "10G"
   image_type            = "dos"
   image_partitions {
@@ -51,7 +51,8 @@ build {
   provisioner "shell" {
     script = "setup_scripts/fix_ubuntu_sources.sh"
   }
-
+  
+  # Set up DNS and install ubuntu-desktop
   provisioner "shell" {
     inline = [
       "rm -f /etc/resolv.conf",
@@ -60,8 +61,6 @@ build {
       "apt update",
       "apt install -y ubuntu-desktop",
       "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
-    #   "apt-get --yes autoremove",
-    #   "apt-get --yes clean"
     ]
   }
 
@@ -78,7 +77,15 @@ build {
     script = "setup_scripts/install_ros.sh"
   }
 
+  # Use 8.8.8.8 and 1.1.1.1 DNS
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
+  }
+  
+  # Clean up
+  provisioner "shell" {
+    inline = [
+      "apt -y autoremove && apt -y clean",
+    ]
   }
 }
