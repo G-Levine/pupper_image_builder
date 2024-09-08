@@ -20,7 +20,7 @@ source "arm" "ubuntu" {
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
-  image_path            = "pupOS_ubuntu_server.img"
+  image_path            = "pupOS_ubuntu_desktop_ros_base.img"
   image_size            = "10G"
   image_type            = "dos"
   image_partitions {
@@ -47,48 +47,45 @@ source "arm" "ubuntu" {
 build {
   sources = ["source.arm.ubuntu"]
 
-  provisioner "file" {
-    source      = "user-data"
-    destination = "/boot/firmware/user-data"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mv /etc/resolv.conf /etc/resolv.conf.bk",
-      "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
-      "sudo echo 'nameserver 1.1.1.1' > /etc/resolv.conf",
-    ]
-  }
-
-  # Set hostname to 'pupper'
-  # Does not fix sudo: unable to resolve host 02eafc09d153: Name or service not known
-  provisioner "shell" {
-    script = "setup_scripts/set_hostname.sh"
-  }
-
   # Fix ubuntu sources
   provisioner "shell" {
     script = "setup_scripts/fix_ubuntu_sources.sh"
   }
-
+  
+  # Set up DNS and install ubuntu-desktop
   provisioner "shell" {
-    script = "provision_server.sh"
+    inline = [
+      "rm -f /etc/resolv.conf",
+      "echo 'nameserver 1.1.1.1' > /etc/resolv.conf",
+      "echo 'nameserver 8.8.8.8' >> /etc/resolv.conf",
+      "apt update",
+      "apt install -y ubuntu-desktop",
+      "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
+    ]
   }
 
+  # Install low-latency kernel
+  provisioner "shell" {
+    inline = [
+      "wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/",
+      "apt update && apt install -y linux-lowlatency"
+    ]
+  }
+  
+  # Install ros jazzy desktop
+  provisioner "shell" {
+    script = "setup_scripts/install_ros.sh"
+  }
+
+  # Use 8.8.8.8 and 1.1.1.1 DNS
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
   }
-
-  # Set robot to log in automatically to pi
-  # Error: Failed to disable unit, unit NetworkManager-wait-online.service does not exist.
-#   provisioner "shell" {
-#     script = "setup_scripts/disable_networkmanager.sh"
-#   }
-
-  # Set robot to log in automatically to pi
-  # Error: /etc/gdm3/custom.conf: No such file or directory
-#   provisioner "shell" {
-#     script = "setup_scripts/set_autologin.sh"
-#   }
-
+  
+  # Clean up
+  provisioner "shell" {
+    inline = [
+      "apt -y autoremove && apt -y clean",
+    ]
+  }
 }
