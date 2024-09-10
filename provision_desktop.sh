@@ -19,7 +19,7 @@ retry_command() {
     else
       attempt=$((attempt + 1))
       echo "Attempt $attempt/$max_attempts failed. Retrying in 5 seconds..."
-      sleep 5
+      sleep 1
     fi
   done
 
@@ -66,7 +66,7 @@ rm -r 4HDMIB_DTBO 4HDMIB_DTBO.zip
 sudo apt install -y avahi-daemon net-tools openssh-server curl
 
 # Install low-latency kernel
-retry_command "sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/" 10
+retry_command "sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/" 20
 sudo apt update && sudo apt install -y linux-lowlatency
 
 # Adafruit GPIO setup
@@ -95,13 +95,16 @@ source /opt/ros/jazzy/setup.bash
 # Create ROS2 workspace
 mkdir -p /home/$DEFAULT_USER/ros2_ws/src
 cd /home/$DEFAULT_USER/ros2_ws/src
-retry_command "git clone https://github.com/G-Levine/control_board_hardware_interface.git && git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules && git clone https://github.com/G-Levine/pupper_v3_description.git && git clone https://github.com/Nate711/pupper_feelings.git" 10
+retry_command "git clone https://github.com/G-Levine/control_board_hardware_interface.git" 20
+retry_command "git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules" 20
+retry_command "git clone https://github.com/G-Levine/pupper_v3_description.git" 20
+retry_command "git clone https://github.com/Nate711/pupper_feelings.git" 20
 
 # Install dependencies
 cd /home/$DEFAULT_USER/ros2_ws
 sudo apt install -y python3-colcon-common-extensions python3-rosdep
-retry_command "sudo rosdep init" 10
-retry_command "rosdep update" 10
+retry_command "sudo rosdep init" 20
+retry_command "rosdep update" 20
 rosdep install --from-paths src -y --ignore-src
 
 # Install additional ROS2 packages
@@ -117,6 +120,6 @@ source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 
 # Install utils
 cd /home/$DEFAULT_USER
-retry_command "git clone https://github.com/Nate711/utils.git -b launch_neural_controller" 10
+retry_command "git clone https://github.com/Nate711/utils.git -b launch_neural_controller" 20
 bash /home/$DEFAULT_USER/utils/install_battery_monitor.sh
 bash /home/$DEFAULT_USER/utils/install_robot_auto_start_service.sh

@@ -77,6 +77,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "setup_scripts/install_vscode.sh"
+  }
+
+  provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
   }
 
