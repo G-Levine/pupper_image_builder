@@ -7,18 +7,10 @@ packer {
   }
 }
 
-# data "git-commit" "cwd-head" {}
-
-locals {
-  # git_sha = data.git-commit.cwd-head.hash
-}
-
 source "arm" "ubuntu" {
   file_urls             = ["./pupOS_ubuntu_desktop_ros_base.img"]
-#   file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04.1/release/SHA256SUMS"
   file_checksum_type    = "none"
   file_target_extension = "img"
-#   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
   image_path            = "pupOS_ubuntu_desktop_full.img"
   image_size            = "10G"

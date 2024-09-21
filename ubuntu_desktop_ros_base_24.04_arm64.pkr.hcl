@@ -68,7 +68,9 @@ build {
   provisioner "shell" {
     inline = [
       "wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/",
-      "apt update && apt install -y linux-lowlatency"
+      "apt update && apt install -y linux-lowlatency",
+      "apt upgrade -y"
+
     ]
   }
   
