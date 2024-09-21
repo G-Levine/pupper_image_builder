@@ -122,4 +122,7 @@ source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 cd /home/$DEFAULT_USER
 retry_command "git clone https://github.com/Nate711/utils.git -b launch_neural_controller" 20
 bash /home/$DEFAULT_USER/utils/install_battery_monitor.sh
-bash /home/$DEFAULT_USER/utils/install_robot_auto_start_service.sh
+# bash /home/$DEFAULT_USER/utils/install_robot_auto_start_service.sh
+
+# Install web browser
+sudo apt install chromium-browser -y
