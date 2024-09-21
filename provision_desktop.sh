@@ -56,7 +56,7 @@ echo 'dtoverlay=hifiberry-dac' >> /boot/firmware/config.txt
 sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
 # Download and extract the display overlays
-wget 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -O 4HDMIB_DTBO.zip
+retry_command "wget 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -O 4HDMIB_DTBO.zip" 20
 sudo apt install -y unzip
 unzip 4HDMIB_DTBO.zip
 sudo cp 4HDMIB_DTBO/*.dtbo /boot/firmware/overlays/
