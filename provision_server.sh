@@ -18,8 +18,8 @@ retry_command() {
       return 0  # Exit the function as success
     else
       attempt=$((attempt + 1))
-      echo "Attempt $attempt/$max_attempts failed. Retrying in 5 seconds..."
-      sleep 5
+      echo "Attempt $attempt/$max_attempts failed. Retrying in 1 seconds..."
+      sleep 1
     fi
   done
 
@@ -53,7 +53,7 @@ echo 'dtoverlay=hifiberry-dac' >> /boot/firmware/config.txt
 sed -i '1s/^/video=HDMI-A-1:720x720M@60D,rotate=270 /' /boot/firmware/cmdline.txt
 
 # Download and extract the display overlays
-wget 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -O 4HDMIB_DTBO.zip
+retry_command "wget 'https://files.waveshare.com/wiki/4inch%20HDMI%20LCD%20(C)/4HDMIB_DTBO.zip' -O 4HDMIB_DTBO.zip" 20
 sudo apt install -y unzip
 unzip 4HDMIB_DTBO.zip
 sudo cp 4HDMIB_DTBO/*.dtbo /boot/firmware/overlays/
@@ -82,7 +82,7 @@ pip install --upgrade pyaudio deepgram-sdk
 sudo apt install software-properties-common
 sudo add-apt-repository universe
 sudo apt update && sudo apt install curl -y
-sudo wget -q https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg
+retry_command "sudo wget -q https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg" 20
 sudo bash -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null'
 sudo apt update && sudo apt install -y ros-dev-tools
 sudo apt install -y ros-jazzy-ros-base
@@ -92,13 +92,16 @@ source /opt/ros/jazzy/setup.bash
 # Create ROS2 workspace
 mkdir -p /home/$DEFAULT_USER/ros2_ws/src
 cd /home/$DEFAULT_USER/ros2_ws/src
-retry_command "git clone https://github.com/G-Levine/control_board_hardware_interface.git && git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules && git clone https://github.com/G-Levine/pupper_v3_description.git && git clone https://github.com/Nate711/pupper_feelings.git" 10
+retry_command "git clone https://github.com/G-Levine/control_board_hardware_interface.git" 20
+retry_command "git clone https://github.com/G-Levine/neural_controller.git --recurse-submodules" 20
+retry_command "git clone https://github.com/G-Levine/pupper_v3_description.git" 20
+retry_command "git clone https://github.com/Nate711/pupper_feelings.git" 20
 
 # Install dependencies
 cd /home/$DEFAULT_USER/ros2_ws
 sudo apt install -y python3-colcon-common-extensions python3-rosdep
-retry_command "sudo rosdep init" 10
-retry_command "rosdep update" 10
+retry_command "sudo rosdep init" 20
+retry_command "rosdep update" 20
 rosdep install --from-paths src -y --ignore-src
 
 # Install additional ROS2 packages
