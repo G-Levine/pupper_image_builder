@@ -69,6 +69,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "setup_scripts/install_libcamera_rpicam_apps.sh"
+  }
+
+  provisioner "shell" {
     script = "setup_scripts/install_vscode.sh"
   }
 

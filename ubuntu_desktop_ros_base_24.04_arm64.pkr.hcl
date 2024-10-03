@@ -7,12 +7,6 @@ packer {
   }
 }
 
-# data "git-commit" "cwd-head" {}
-
-locals {
-  # git_sha = data.git-commit.cwd-head.hash
-}
-
 source "arm" "ubuntu" {
   file_urls             = ["https://cdimage.ubuntu.com/releases/24.04.1/release/ubuntu-24.04.1-preinstalled-server-arm64+raspi.img.xz"]
   file_checksum_url     = "https://cdimage.ubuntu.com/releases/24.04.1/release/SHA256SUMS"

@@ -66,10 +66,15 @@ sudo apt install -y avahi-daemon net-tools openssh-server curl
 retry_command "sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/" 10
 sudo apt update && sudo apt install -y linux-lowlatency
 
-# Adafruit GPIO setup
+# Install gpiod for GPIO manipulation
 sudo apt install -y python-is-python3 python3-pip i2c-tools libgpiod-dev python3-libgpiod build-essential
-sudo rm /usr/lib/python3.*/EXTERNALLY-MANAGED
-pip install Adafruit-Blinka RPi.GPIO
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+
+
+# Install gpiozero for alternative GPIO manipulation
+sudo apt install -y python3-rpi-lgpio
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+pip install gpiozero
 
 # Bluetooth
 sudo apt install -y bluez

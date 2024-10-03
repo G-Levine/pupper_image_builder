@@ -69,10 +69,15 @@ sudo apt install -y avahi-daemon net-tools openssh-server curl
 retry_command "sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/" 20
 sudo apt update && sudo apt install -y linux-lowlatency
 
-# Adafruit GPIO setup
+# Install gpiod for GPIO manipulation
 sudo apt install -y python-is-python3 python3-pip i2c-tools libgpiod-dev python3-libgpiod build-essential
-sudo rm /usr/lib/python3.*/EXTERNALLY-MANAGED
-pip install Adafruit-Blinka RPi.GPIO
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+
+
+# Install gpiozero for alternative GPIO manipulation
+sudo apt install -y python3-rpi-lgpio
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+pip install gpiozero
 
 # Bluetooth
 sudo apt install -y bluez
@@ -85,7 +90,7 @@ pip install --upgrade pyaudio deepgram-sdk
 sudo apt install software-properties-common
 sudo add-apt-repository universe
 sudo apt update && sudo apt install curl -y
-sudo wget -q https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg
+retry_command "sudo wget -q https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg" 20
 sudo bash -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null'
 sudo apt update && sudo apt install -y ros-dev-tools
 sudo apt install -y ros-jazzy-desktop
