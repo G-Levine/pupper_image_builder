@@ -72,7 +72,8 @@ sudo apt update && sudo apt install -y linux-lowlatency
 # Install gpiod for GPIO manipulation
 sudo apt install -y python-is-python3 python3-pip i2c-tools libgpiod-dev python3-libgpiod build-essential
 sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
-
+pip install Adafruit-Blinka RPi.GPIO
+sudo pip install Adafruit-Blinka RPi.GPIO
 
 # Install gpiozero for alternative GPIO manipulation
 sudo apt install -y python3-rpi-lgpio

@@ -40,7 +40,7 @@ retry_command() {
 # sudo apt install code # or code-insiders
 
 # Get VSCode version 1.93.0
-retry_command "wget https://update.code.visualstudio.com/1.93.0/linux-deb-arm64/stable -O vscode_1.93.0_arm64.deb" 20
+retry_command "wget -q https://update.code.visualstudio.com/1.93.0/linux-deb-arm64/stable -O vscode_1.93.0_arm64.deb" 20
 apt install -y ./vscode_1.93.0_arm64.deb
 
 ## Disable git extension to stop VSCode from freezing when opening git repos ##
