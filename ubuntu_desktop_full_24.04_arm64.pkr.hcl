@@ -73,6 +73,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "setup_scripts/install_hailo.sh"
+  }
+
+  provisioner "shell" {
     script = "setup_scripts/install_vscode.sh"
   }
 

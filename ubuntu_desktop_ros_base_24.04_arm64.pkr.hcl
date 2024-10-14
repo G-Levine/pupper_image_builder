@@ -55,6 +55,8 @@ build {
       "apt update",
       "apt install -y ubuntu-desktop",
       "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
+      "apt install -y linux-headers-raspi",
+      "apt full-upgrade --yes --option=Dpkg::Options::=--force-confdef",
     ]
   }
 

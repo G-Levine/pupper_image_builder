@@ -35,6 +35,7 @@ mkdir -p /home/$DEFAULT_USER
 
 # Update packages
 sudo apt update
+sudo apt full-upgrade -y
 
 # Install desktop
 sudo apt install -y ubuntu-desktop
