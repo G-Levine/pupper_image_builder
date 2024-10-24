@@ -37,7 +37,7 @@ mkdir -p /home/$DEFAULT_USER
 sudo apt update
 
 # Setup for Raspberry Pi 5
-echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=400000' >> /boot/firmware/config.txt
+echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=100000' >> /boot/firmware/config.txt
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
 echo 'dtoverlay=waveshare-4dpic-3b' >> /boot/firmware/config.txt
 echo 'dtoverlay=waveshare-4dpic-4b' >> /boot/firmware/config.txt
@@ -119,6 +119,7 @@ sudo apt upgrade -y
 # Build ROS2 workspace
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 echo 'source ~/ros2_ws/install/setup.bash' >> /home/$DEFAULT_USER/.bashrc
+echo 'alias build="cd $HOME/ros2_ws && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cd -"' >> /home/$DEFAULT_USER/.bashrc
 source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 
 # Install utils
