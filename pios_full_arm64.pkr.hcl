@@ -12,8 +12,8 @@ source "arm" "raspbian" {
   file_checksum_type    = "none"
   file_target_extension = "img"
   image_build_method    = "resize"
-  image_path            = "pupOS_pios_base.img"
-  image_size            = "20G"
+  image_path            = "pupOS_pios_full.img"
+  image_size            = "14G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
