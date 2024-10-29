@@ -6,6 +6,7 @@ An automated OS image builder for the Pupper robot. Pulls the latest Ubuntu imag
 ## How to use
 ### Prerequisites
 1. Install Docker Desktop or some Docker engine
+2. Make sure your Docker is up-to-date. After upgrading MacOS, older versions of Docker will not work.
 
 
 ### Build Ubuntu server image:
