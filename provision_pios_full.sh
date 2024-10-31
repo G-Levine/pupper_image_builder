@@ -54,6 +54,10 @@ cd /home/$DEFAULT_USER/ros2_ws
 # Build ROS2 workspace
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 echo 'source ~/ros2_ws/install/setup.bash' >> /home/$DEFAULT_USER/.bashrc
+
+# Alias build convenience command
+echo 'alias build="cd $HOME/ros2_ws && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cd -"' >> /home/$DEFAULT_USER/.bashrc
+
 source /home/$DEFAULT_USER/ros2_ws/install/setup.bash
 
 # Install utils

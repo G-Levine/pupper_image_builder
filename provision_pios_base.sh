@@ -49,8 +49,12 @@ source /opt/ros/jazzy/setup.bash
 sudo apt update
 
 # Setup for Raspberry Pi 5
-echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=100000' >> /boot/firmware/config.txt
-echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
+# Stuff at the top of the config.txt
+echo 'dtparam=spi=on' | sudo tee -a /boot/firmware/config.txt
+echo 'dtparam=i2c_arm=on,i2c_arm_baudrate=100000' | sudo tee -a /boot/firmware/config.txt
+echo 'usb_max_current_enable=1' | sudo tee -a /boot/firmware/config.txt
+
+# At the bottom of config.txt
 echo 'dtoverlay=waveshare-4dpic-3b' >> /boot/firmware/config.txt
 echo 'dtoverlay=waveshare-4dpic-4b' >> /boot/firmware/config.txt
 echo 'dtoverlay=waveshare-4dpic-5b' >> /boot/firmware/config.txt

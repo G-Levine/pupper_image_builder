@@ -72,3 +72,92 @@ AutomaticLogin=pi
 * Sometimes get errors like `arm.ubuntu:         <urlopen error <urlopen error [Errno -3] Temporary failure in name resolution> (https://raw.githubusercontent.com/ros/rosdistro/master/humble/distribution.yaml)>` during image build where the container can't properly get web resources. 
 * Using the pre-built Ubuntu Desktop image does not work. Any window takes a very long time to open. So instead we install ubuntu-desktop on top of the pre-built Ubuntu Server image.
 * Sometimes user-data is not correctly installed. You'll know if the Pi boots and you don't see the pi user to log in to. PiOS uses a system daemon to run a script on first boot. Maybe cloud-init isn't working. Can try to put setup script in cloud-init per-boot folder or once folder.
+
+
+
+# PiOS automatic settings
+cmdline.txt
+```
+video=HDMI-A-1:720x720M@60D,rotate=270 console=serial0,115200 console=tty1 root=PARTUUID=75d6d1b4-02 rootfstype=ext4 fsck.repair=yes rootwait quiet init=/usr/lib/raspberrypi-sys-mods/firstboot splash plymouth.ignore-serial-consoles cfg80211.ieee80211_regdom=JP systemd.run=/boot/firstrun.sh systemd.run_success_action=reboot systemd.unit=kernel-command-line.target
+```
+
+firstrun.sh
+```
+#!/bin/bash
+
+set +e
+
+CURRENT_HOSTNAME=`cat /etc/hostname | tr -d " \t\n\r"`
+if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_hostname pupper
+else
+   echo pupper >/etc/hostname
+   sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\tpupper/g" /etc/hosts
+fi
+FIRSTUSER=`getent passwd 1000 | cut -d: -f1`
+FIRSTUSERHOME=`getent passwd 1000 | cut -d: -f6`
+if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
+   /usr/lib/raspberrypi-sys-mods/imager_custom enable_ssh
+else
+   systemctl enable ssh
+fi
+if [ -f /usr/lib/userconf-pi/userconf ]; then
+   /usr/lib/userconf-pi/userconf 'pi' '$5$bHlIjffqCc$8sCEUcNlyls7Qiy8HQMwEqCSTJgjukrZEV9zzPDbgF/'
+else
+   echo "$FIRSTUSER:"'$5$bHlIjffqCc$8sCEUcNlyls7Qiy8HQMwEqCSTJgjukrZEV9zzPDbgF/' | chpasswd -e
+   if [ "$FIRSTUSER" != "pi" ]; then
+      usermod -l "pi" "$FIRSTUSER"
+      usermod -m -d "/home/pi" "pi"
+      groupmod -n "pi" "$FIRSTUSER"
+      if grep -q "^autologin-user=" /etc/lightdm/lightdm.conf ; then
+         sed /etc/lightdm/lightdm.conf -i -e "s/^autologin-user=.*/autologin-user=pi/"
+      fi
+      if [ -f /etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
+         sed /etc/systemd/system/getty@tty1.service.d/autologin.conf -i -e "s/$FIRSTUSER/pi/"
+      fi
+      if [ -f /etc/sudoers.d/010_pi-nopasswd ]; then
+         sed -i "s/^$FIRSTUSER /pi /" /etc/sudoers.d/010_pi-nopasswd
+      fi
+   fi
+fi
+if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_wlan 'SSID-A7F77D' '501e003681562a72c44b34556bf9b2fe16ccc3b7de950d3fa310b804fd94fdd9' 'JP'
+else
+cat >/etc/wpa_supplicant/wpa_supplicant.conf <<'WPAEOF'
+country=JP
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+ap_scan=1
+
+update_config=1
+network={
+	ssid="SSID-A7F77D"
+	psk=501e003681562a72c44b34556bf9b2fe16ccc3b7de950d3fa310b804fd94fdd9
+}
+
+WPAEOF
+   chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
+   rfkill unblock wifi
+   for filename in /var/lib/systemd/rfkill/*:wlan ; do
+       echo 0 > $filename
+   done
+fi
+if [ -f /usr/lib/raspberrypi-sys-mods/imager_custom ]; then
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_keymap 'us'
+   /usr/lib/raspberrypi-sys-mods/imager_custom set_timezone 'Asia/Tokyo'
+else
+   rm -f /etc/localtime
+   echo "Asia/Tokyo" >/etc/timezone
+   dpkg-reconfigure -f noninteractive tzdata
+cat >/etc/default/keyboard <<'KBEOF'
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS=""
+
+KBEOF
+   dpkg-reconfigure -f noninteractive keyboard-configuration
+fi
+rm -f /boot/firstrun.sh
+sed -i 's| systemd.run.*||g' /boot/cmdline.txt
+exit 0
+```

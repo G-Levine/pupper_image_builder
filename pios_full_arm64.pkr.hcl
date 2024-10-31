@@ -57,6 +57,11 @@ build {
     script = "provision_pios_full.sh"
   }
 
+  provisioner "file" {
+    source      = "asound.conf"
+    destination = "/etc/asound.conf"
+  }
+
   provisioner "shell" {
     inline = [
       "sudo mv /etc/resolv.conf.bk /etc/resolv.conf",
