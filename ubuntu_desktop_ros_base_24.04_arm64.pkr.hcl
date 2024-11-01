@@ -57,17 +57,12 @@ build {
       "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
     ]
   }
-
-  # Install low-latency kernel
-  provisioner "shell" {
-    inline = [
-      "wget https://github.com/raspberrypi/firmware/raw/master/boot/bcm2712-rpi-5-b.dtb -P /etc/flash-kernel/dtbs/",
-      "apt update && apt install -y linux-lowlatency",
-      "apt upgrade -y"
-
-    ]
-  }
   
+  # Install GRUB and configure the Linux kernel for low latency
+  provisioner "shell" {
+    script = "setup_scripts/setup_grub_and_configure_kernel.sh"
+  }
+
   # Install ros jazzy desktop
   provisioner "shell" {
     script = "setup_scripts/install_ros.sh"

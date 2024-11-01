@@ -87,3 +87,7 @@ pip install --upgrade pyaudio deepgram-sdk
 
 # Install web browser
 # TODO FIX THIS # sudo apt install chromium-browser -y
+
+# Disable setup wizard
+mkdir /home/$DEFAULT_USER/.config
+echo "yes" >> /home/$DEFAULT_USER/.config/gnome-initial-setup-done
