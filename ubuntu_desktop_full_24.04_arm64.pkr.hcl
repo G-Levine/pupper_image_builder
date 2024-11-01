@@ -43,7 +43,7 @@ build {
     source      = "user-data"
     destination = "/boot/firmware/user-data"
   }
-  
+
   # Add temporary DNS for internet
   provisioner "shell" {
     inline = [
@@ -73,7 +73,16 @@ build {
   }
 
   provisioner "shell" {
-    script = "setup_scripts/install_vscode.sh"
+    script = "setup_scripts/install_pupper_ros_packages.sh"
+  }
+
+  provisioner "file" {
+    source      = "resources/"
+    destination = "/home/pi/resources/"
+  }
+
+  provisioner "shell" {
+    script = "setup_scripts/install_hailo.sh"
   }
 
   provisioner "shell" {

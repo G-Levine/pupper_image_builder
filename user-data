@@ -25,3 +25,5 @@ network:
 runcmd:
   - echo '@realtime soft rtprio 99\n@realtime soft priority 99\n@realtime soft memlock 102400\n@realtime hard rtprio 99\n@realtime hard priority 99\n@realtime hard memlock 102400' | sudo tee -a /etc/security/limits.conf
   - chown -R pi /home/pi
+  - yes | sudo dpkg -i /home/pi/resources/hailort-pcie-driver_4.19.0_all.deb
+  - yes | sudo dpkg -i /home/pi/resources/hailort_4.19.0_arm64.deb
