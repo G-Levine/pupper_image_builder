@@ -2,6 +2,8 @@
 
 set -x
 
+DEFAULT_USER=pi
+
 # Function to retry a command
 retry_command() {
   local cmd="$1"

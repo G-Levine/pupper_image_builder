@@ -2,6 +2,8 @@
 
 set -x
 
+DEFAULT_USER=pi
+
 # Install ROS2
 sudo apt install software-properties-common
 sudo add-apt-repository universe
