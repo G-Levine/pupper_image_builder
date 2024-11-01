@@ -34,6 +34,9 @@ DEFAULT_USER=pi
 mkdir -p /home/$DEFAULT_USER
 mkdir -p /home/$DEFAULT_USER/resources
 
+# Make sure bashrc is sourced when SSHing
+echo -e 'if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi' >> "/home/$DEFAULT_USER/.bash_profile"
+
 # Update packages
 sudo apt update
 
