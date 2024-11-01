@@ -31,6 +31,12 @@ Image saved as `pupOS_ubuntu_desktop_ros_base.img`
 
 The build process takes about 5-30 minutes on an M1 MacBook Pro depending on which image you build.
 
+### Build PiOS image
+```
+./make_pios_base_image.sh
+./make_pios_full_image.sh
+```
+
 ### Default credentials
 Hostname: `pupper`
 
@@ -59,6 +65,12 @@ AutomaticLogin=pi
 * PiOS - checkout `pios` branch. 
 
 ## Troubleshooting
+### No sound from Pupper speaker when using PiOS
+* You need to blacklist the DualSense controller audio device
+* sudo nano /etc/modprobe.d/blacklist.conf
+* Add: "blacklist snd_usb_audio"
+
+
 ###  Checksum error with the ubuntu desktop image
 * Most likely the image was updated but packer has cached the checksum and has not realized it should get the new checksum. 
 * Delete .packer_plugins to make packer download the checksum again.
