@@ -55,6 +55,7 @@ build {
       "apt update",
       "apt install -y ubuntu-desktop",
       "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
+      "mkdir -p /home/pi"
     ]
   }
   
