@@ -92,6 +92,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "setup_scripts/install_chromium.sh"
+  }
+
+  provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
   }
 
