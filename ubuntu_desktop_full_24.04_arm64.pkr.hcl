@@ -13,7 +13,7 @@ source "arm" "ubuntu" {
   file_target_extension = "img"
   image_build_method    = "resize"
   image_path            = "pupOS_ubuntu_desktop_full.img"
-  image_size            = "10G"
+  image_size            = "12G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
