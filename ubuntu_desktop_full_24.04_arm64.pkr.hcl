@@ -65,7 +65,12 @@ build {
   }
 
   provisioner "shell" {
-    script = "provision_desktop.sh"
+    script = "setup_scripts/provision.sh"
+  }
+
+  # Install ros jazzy desktop
+  provisioner "shell" {
+    script = "setup_scripts/install_ros_desktop.sh"
   }
 
   provisioner "shell" {
@@ -88,17 +93,5 @@ build {
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
   }
-
-  # Set robot to log in automatically to pi
-  # Error: Failed to disable unit, unit NetworkManager-wait-online.service does not exist.
-#   provisioner "shell" {
-#     script = "setup_scripts/disable_networkmanager.sh"
-#   }
-
-  # Set robot to log in automatically to pi
-  # Error: /etc/gdm3/custom.conf: No such file or directory
-#   provisioner "shell" {
-#     script = "setup_scripts/set_autologin.sh"
-#   }
 
 }

@@ -84,12 +84,6 @@ build {
   }
 
   # Set robot to log in automatically to pi
-  # Error: Failed to disable unit, unit NetworkManager-wait-online.service does not exist.
-#   provisioner "shell" {
-#     script = "setup_scripts/disable_networkmanager.sh"
-#   }
-
-  # Set robot to log in automatically to pi
   # Error: /etc/gdm3/custom.conf: No such file or directory
 #   provisioner "shell" {
 #     script = "setup_scripts/set_autologin.sh"

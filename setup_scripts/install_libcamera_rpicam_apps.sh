@@ -26,6 +26,9 @@ retry_command() {
   return 1  # Indicate failure
 }
 
+DEFAULT_USER=pi
+cd /home/$DEFAULT_USER
+
 ######## Install libcamera ########
 sudo apt install -y qtbase5-dev libqt5core5a libqt5gui5 libqt5widgets5 libepoxy-dev
 sudo apt install -y libavcodec-dev libavdevice-dev libavformat-dev libswresample-dev
@@ -48,33 +51,34 @@ cd libcamera
 
 meson setup build --buildtype=release -Dpipelines=rpi/vc4,rpi/pisp -Dipas=rpi/vc4,rpi/pisp -Dv4l2=true -Dgstreamer=enabled -Dtest=false -Dlc-compliance=disabled -Dcam=disabled -Dqcam=disabled -Ddocumentation=disabled -Dpycamera=enabled -Dwerror=false
 # Add GST_PLUGIN_PATH to .bashrc if not already present
-if ! grep -q "export GST_PLUGIN_PATH=/home/pi/libcamera/build/src/gstreamer" ~/.bashrc; then
-    echo "export GST_PLUGIN_PATH=/home/pi/libcamera/build/src/gstreamer" >> ~/.bashrc
+if ! grep -q "export GST_PLUGIN_PATH=/home/pi/libcamera/build/src/gstreamer" /home/$DEFAULT_USER/.bashrc; then
+    echo "export GST_PLUGIN_PATH=/home/pi/libcamera/build/src/gstreamer" >> /home/$DEFAULT_USER/.bashrc
     echo "Added GST_PLUGIN_PATH to ~/.bashrc"
 else
     echo "GST_PLUGIN_PATH is already set in ~/.bashrc"
 fi
 
 # Source .bashrc to apply changes immediately
-source ~/.bashrc
+source /home/$DEFAULT_USER/.bashrc
 
 ninja -C build
 sudo ninja -C build install
 
 
 ####### Build rpicam-apps #######
-sudo apt install -y cmake libboost-program-options-dev libdrm-dev libexif-dev
-sudo apt install -y meson ninja-build
-cd ..
-if [ ! -d "rpicam-apps" ]; then
-    retry_command "git clone --recurse-submodules https://github.com/raspberrypi/rpicam-apps.git" 20
-else
-    echo "Folder 'libcamera' already exists. Skipping clone."
-fi
+# TODO: figure out why this fails due to not finding libpng
+# sudo apt install -y cmake libboost-program-options-dev libdrm-dev libexif-dev
+# sudo apt install -y meson ninja-build
+# cd ..
+# if [ ! -d "rpicam-apps" ]; then
+#     retry_command "git clone --recurse-submodules https://github.com/raspberrypi/rpicam-apps.git" 20
+# else
+#     echo "Folder 'rpicam-apps' already exists. Skipping clone."
+# fi
 
-cd rpicam-apps
-# TODO: enable hailo -Denable_hailo=disabled for image builder image
-meson setup --wipe build -Denable_libav=enabled -Denable_drm=enabled -Denable_egl=enabled -Denable_qt=enabled -Denable_opencv=disabled -Denable_tflite=disabled -Dwerror=false -Denable_imx500=false -Ddownload_imx500_models=false
-meson compile -C build
-sudo meson install -C build
-sudo ldconfig
+# cd rpicam-apps
+# # TODO: enable hailo -Denable_hailo=disabled for image builder image
+# meson setup --wipe build -Denable_libav=enabled -Denable_drm=enabled -Denable_egl=enabled -Denable_qt=enabled -Denable_opencv=disabled -Denable_tflite=disabled -Dwerror=false -Denable_imx500=false -Ddownload_imx500_models=false
+# meson compile -C build
+# sudo meson install -C build
+# sudo ldconfig

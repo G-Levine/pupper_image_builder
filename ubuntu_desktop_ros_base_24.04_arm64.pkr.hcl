@@ -63,11 +63,6 @@ build {
     script = "setup_scripts/setup_grub_and_configure_kernel.sh"
   }
 
-  # Install ros jazzy desktop
-  provisioner "shell" {
-    script = "setup_scripts/install_ros.sh"
-  }
-
   # Use 8.8.8.8 and 1.1.1.1 DNS
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
