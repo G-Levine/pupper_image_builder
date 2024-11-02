@@ -68,10 +68,11 @@ build {
     script = "setup_scripts/provision.sh"
   }
 
+  # Already installed in base image
   # Install ros jazzy desktop
-  provisioner "shell" {
-    script = "setup_scripts/install_ros_desktop.sh"
-  }
+#   provisioner "shell" {
+#     script = "setup_scripts/install_ros_desktop.sh"
+#   }
 
   provisioner "shell" {
     script = "setup_scripts/install_libcamera_rpicam_apps.sh"

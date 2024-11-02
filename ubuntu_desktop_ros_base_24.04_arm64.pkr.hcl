@@ -68,6 +68,10 @@ build {
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
   }
+
+  provisioner "shell" {
+    script = "setup_scripts/install_ros_desktop.sh"
+  }
   
   # Clean up
   provisioner "shell" {

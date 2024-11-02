@@ -3,6 +3,7 @@
 set -x
 
 DEFAULT_USER=pi
+mkdir -p /home/$DEFAULT_USER
 
 # Install ROS2
 sudo apt install software-properties-common
