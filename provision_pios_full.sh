@@ -37,6 +37,9 @@ mkdir -p /home/$DEFAULT_USER
 sudo apt update
 sudo apt upgrade -y
 
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+pip install wandb
+
 source /opt/ros/jazzy/setup.bash
 cd /home/$DEFAULT_USER/ros2_ws/src
 rm -rf control_board_hardware_interface neural_controller pupper_v3_description pupper_feelings
