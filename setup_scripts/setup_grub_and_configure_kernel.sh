@@ -8,8 +8,9 @@ sudo mkdir /boot/grub
 # Set kernel preemption model to full preemption for low-latency
 KERNEL_CMD="preempt=full nohz_full=all threadirqs"
 
+# TODO: Observed overheating when using this, commented out for now
 # Set CPU governor to performance
-echo "GOVERNOR='performance'" | sudo tee /etc/default/cpufrequtils
+# echo "GOVERNOR='performance'" | sudo tee /etc/default/cpufrequtils
 
 # TODO: fix the following (either doesn't persist after reboot or just doesn't work)
 
