@@ -13,7 +13,7 @@ source "arm" "ubuntu" {
   file_target_extension = "img"
   image_build_method    = "resize"
   image_path            = "pupOS_ubuntu_desktop_full.img"
-  image_size            = "10G"
+  image_size            = "12G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
@@ -68,10 +68,11 @@ build {
     script = "setup_scripts/provision.sh"
   }
 
+  # Already installed in base image
   # Install ros jazzy desktop
-  provisioner "shell" {
-    script = "setup_scripts/install_ros_desktop.sh"
-  }
+#   provisioner "shell" {
+#     script = "setup_scripts/install_ros_desktop.sh"
+#   }
 
   provisioner "shell" {
     script = "setup_scripts/install_libcamera_rpicam_apps.sh"
@@ -88,6 +89,10 @@ build {
 
   provisioner "shell" {
     script = "setup_scripts/install_hailo.sh"
+  }
+
+  provisioner "shell" {
+    script = "setup_scripts/install_chromium.sh"
   }
 
   provisioner "shell" {

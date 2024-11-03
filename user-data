@@ -28,3 +28,4 @@ runcmd:
   - yes | sudo dpkg -i /home/pi/resources/hailort-pcie-driver_4.19.0_all.deb
   - yes | sudo dpkg -i /home/pi/resources/hailort_4.19.0_arm64.deb
   - sudo systemctl disable NetworkManager-wait-online.service
+  - sudo /home/pi/resources/set_autologin.sh

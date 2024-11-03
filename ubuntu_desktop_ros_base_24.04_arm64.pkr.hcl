@@ -15,7 +15,7 @@ source "arm" "ubuntu" {
   file_unarchive_cmd    = ["xz", "--decompress", "$ARCHIVE_PATH"]
   image_build_method    = "resize"
   image_path            = "pupOS_ubuntu_desktop_ros_base.img"
-  image_size            = "10G"
+  image_size            = "12G"
   image_type            = "dos"
   image_partitions {
     name         = "boot"
@@ -55,6 +55,7 @@ build {
       "apt update",
       "apt install -y ubuntu-desktop",
       "apt upgrade --yes --option=Dpkg::Options::=--force-confdef",
+      "mkdir -p /home/pi"
     ]
   }
   
@@ -66,6 +67,10 @@ build {
   # Use 8.8.8.8 and 1.1.1.1 DNS
   provisioner "shell" {
     script = "setup_scripts/set_nameservers.sh"
+  }
+
+  provisioner "shell" {
+    script = "setup_scripts/install_ros_desktop.sh"
   }
   
   # Clean up
