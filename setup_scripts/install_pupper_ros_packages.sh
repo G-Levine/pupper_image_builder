@@ -41,6 +41,10 @@ retry_command "git clone https://github.com/G-Levine/pupper_v3_description.git" 
 retry_command "git clone https://github.com/Nate711/pupper_feelings.git" 20
 retry_command "git clone https://github.com/christianrauch/camera_ros.git" 20
 
+# Install wandb for neural controller
+sudo rm -f /usr/lib/python3.*/EXTERNALLY-MANAGED
+pip install wandb
+
 # Install dependencies
 cd /home/$DEFAULT_USER/ros2_ws
 sudo apt install -y python3-colcon-common-extensions python3-rosdep
