@@ -103,6 +103,9 @@ sudo apt install -y software-properties-common
 mkdir -p /home/$DEFAULT_USER/ros2_ws/src
 cd /home/$DEFAULT_USER/ros2_ws/src
 
+# install libcap-dev
+sudo apt install -y libcap-dev
+
 pip install typeguard
 pip uninstall em
 pip install empy==3.3.4
